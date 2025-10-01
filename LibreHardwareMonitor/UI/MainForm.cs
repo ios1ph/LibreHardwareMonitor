@@ -169,54 +169,7 @@ public sealed partial class MainForm : Form
         _computer.HardwareAdded += HardwareAdded;
         _computer.HardwareRemoved += HardwareRemoved;
 
-        if (PawnIo.PawnIo.IsInstalled)
-        {
-            if (PawnIo.PawnIo.Version < new Version(2, 0, 0, 0))
-            {
-                DialogResult result = MessageBox.Show("PawnIO is outdated, do you want to update it?", nameof(LibreHardwareMonitor), MessageBoxButtons.OKCancel);
-                if (result == DialogResult.OK)
-                    InstallPawnIO();
-            }
-        }
-        else
-        {
-            DialogResult result = MessageBox.Show("PawnIO is not installed, do you want to install it?", nameof(LibreHardwareMonitor), MessageBoxButtons.OKCancel);
-            if (result == DialogResult.OK)
-                InstallPawnIO();
-        }
-
         _computer.Open();
-
-        static void InstallPawnIO()
-        {
-            string path = ExtractPawnIO();
-            if (!string.IsNullOrEmpty(path))
-            {
-                var process = Process.Start(new ProcessStartInfo(path, "-install"));
-                process?.WaitForExit();
-
-                File.Delete(path);
-            }
-        }
-
-        static string ExtractPawnIO()
-        {
-            string destination = Path.Combine(Directory.GetCurrentDirectory(), "PawnIO_setup.exe");
-
-            try
-            {
-
-                using Stream resourceStream = typeof(MainForm).Assembly.GetManifestResourceStream("LibreHardwareMonitor.Resources.PawnIO_setup.exe");
-                using FileStream fileStream = new(destination, FileMode.Create, FileAccess.Write);
-                resourceStream.CopyTo(fileStream);
-
-                return destination;
-            }
-            catch
-            {
-                return null;
-            }
-        }
 
         backgroundUpdater.DoWork += BackgroundUpdater_DoWork;
         timer.Enabled = true;
