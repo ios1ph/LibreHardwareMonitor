@@ -18,7 +18,11 @@
     <LangVersion>latest</LangVersion>
     <PackageIcon>packageicon.png</PackageIcon>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    <Platforms>x64;x86</Platforms>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='AnyCPU'">
+    <DefineConstants>$(DefineConstants);LIBREHW_ANYCPU</DefineConstants>
+    <NoWarn>$(NoWarn);PInvoke005</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <OutputPath>..\bin\Debug\</OutputPath>

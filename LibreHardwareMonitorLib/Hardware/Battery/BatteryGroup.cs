@@ -33,6 +33,14 @@ internal class BatteryGroup : IGroup
                                                                                   HWND.Null,
                                                                                   SETUP_DI_GET_CLASS_DEVS_FLAGS.DIGCF_PRESENT | SETUP_DI_GET_CLASS_DEVS_FLAGS.DIGCF_DEVICEINTERFACE);
 
+#if LIBREHW_ANYCPU
+        if (!hdev.IsInvalid)
+        {
+            hdev.Dispose();
+        }
+
+#else
+
         if (!hdev.IsInvalid)
         {
             for (uint i = 0;; i++)
@@ -126,6 +134,9 @@ internal class BatteryGroup : IGroup
 
             hdev.Dispose();
         }
+
+#endif
+
     }
 
     /// <inheritdoc />
